@@ -1,0 +1,25 @@
+name: Python App Workflow
+on:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  run_app:
+    runs-on: google-batch
+    strategy:
+      matrix:
+        weighted: [true, false]
+        length: [14, 28]
+        theme: [theme1, theme2, theme3, theme4, theme5, theme6, theme7, theme8, theme9, theme10]
+        start_date: [MMDDYYYY, '']
+        end_date: [MMDDYYYY, '']
+    steps:
+    - name: Set up Python environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Run Python app
+      run: |
+        python app.py --weighted ${{ matrix.weighted }} --length ${{ matrix.length }} --theme ${{ matrix.theme }} --start_date ${{ matrix.start_date }} --end_date ${{ matrix.end_date }}
